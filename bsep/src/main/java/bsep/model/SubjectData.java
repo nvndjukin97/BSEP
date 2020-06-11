@@ -1,9 +1,6 @@
 package bsep.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.bouncycastle.asn1.x500.X500Name;
 
 
@@ -15,6 +12,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class SubjectData {
 
     private PublicKey publicKey;

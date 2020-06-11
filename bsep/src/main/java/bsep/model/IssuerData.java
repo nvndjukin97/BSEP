@@ -1,10 +1,7 @@
 package bsep.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.bouncycastle.asn1.x500.X500Name;
 
 
@@ -12,6 +9,7 @@ import java.security.PrivateKey;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class IssuerData {
