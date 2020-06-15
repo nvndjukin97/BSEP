@@ -1,8 +1,10 @@
 package bsep.service.impl;
 
+import bsep.dto.SubjectDTO;
 import bsep.model.IssuerData;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
@@ -10,17 +12,20 @@ import java.security.PrivateKey;
 @Service
 public class IssuerDataServiceImpl {
 
-    public IssuerData generateIssuerData(PrivateKey issuerKey) {
+    @Autowired
+    SubjectDataServiceImpl subjectDataService;
+
+    public IssuerData generateIssuerData(PrivateKey issuerKey, SubjectDTO subjectDTO) {
         X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-        builder.addRDN(BCStyle.CN, "Nikola Luburic");
-        builder.addRDN(BCStyle.SURNAME, "Luburic");
-        builder.addRDN(BCStyle.GIVENNAME, "Nikola");
-        builder.addRDN(BCStyle.O, "UNS-FTN");
-        builder.addRDN(BCStyle.OU, "Katedra za informatiku");
-        builder.addRDN(BCStyle.C, "RS");
-        builder.addRDN(BCStyle.E, "nikola.luburic@uns.ac.rs");
+        builder.addRDN(BCStyle.CN, subjectDTO.getCn());
+        builder.addRDN(BCStyle.SURNAME, subjectDTO.getSurname());
+        builder.addRDN(BCStyle.GIVENNAME, subjectDTO.getGivenName());
+        builder.addRDN(BCStyle.O, subjectDTO.getOrganization());
+        builder.addRDN(BCStyle.OU, subjectDTO.getOrganizationUnit());
+        builder.addRDN(BCStyle.C, subjectDTO.getCountry());
+        builder.addRDN(BCStyle.E, subjectDTO.getEmail());
         //UID (USER ID) je ID korisnika
-        builder.addRDN(BCStyle.UID, "654321");
+        builder.addRDN(BCStyle.UID, subjectDataService.generateUID());
 
         //Kreiraju se podaci za issuer-a, sto u ovom slucaju ukljucuje:
         // - privatni kljuc koji ce se koristiti da potpise sertifikat koji se izdaje

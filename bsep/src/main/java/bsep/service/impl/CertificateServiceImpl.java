@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.KeyPair;
 import java.security.cert.X509Certificate;
+import java.text.ParseException;
 
 @Service
 public class CertificateServiceImpl {
@@ -35,12 +36,12 @@ public class CertificateServiceImpl {
         System.out.println("-------------------------------------------------------");
     }
 
-    public String create(){
+    public String create(SubjectDTO subjectDTO) throws ParseException {
 
         KeyPair keyPairIssuer = subjectDataService.generateKeyPair();
-        IssuerData issuerData = issuerDataService.generateIssuerData(keyPairIssuer.getPrivate());
+        IssuerData issuerData = issuerDataService.generateIssuerData(keyPairIssuer.getPrivate(), subjectDTO);
         //Moracu menjati da ne bude hardkodovan subjectData!
-        SubjectData subjectData = subjectDataService.generateSubjectData();
+        SubjectData subjectData = subjectDataService.generateSubjectData(subjectDTO);
 
 
         //Generise se sertifikat za subjekta, potpisan od strane issuer-a
