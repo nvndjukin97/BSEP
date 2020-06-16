@@ -5,6 +5,7 @@ import bsep.certGenerator.CertificateGenerator;
 import bsep.dto.SubjectDTO;
 import bsep.model.IssuerData;
 import bsep.model.SubjectData;
+import bsep.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.security.cert.X509Certificate;
 import java.text.ParseException;
 
 @Service
-public class CertificateServiceImpl {
+public class CertificateServiceImpl implements CertificateService {
 
     @Autowired
     private SubjectDataServiceImpl subjectDataService;
