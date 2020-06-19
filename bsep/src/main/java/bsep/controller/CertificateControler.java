@@ -5,11 +5,14 @@ import bsep.service.impl.CertificateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import sun.util.locale.LocaleMatcher;
 
+import java.io.IOException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.cert.CertificateException;
 import java.text.ParseException;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -29,4 +32,11 @@ public class CertificateControler {
     public ResponseEntity<String>create(@RequestBody SubjectDTO subjectDTO) throws ParseException {
         return new ResponseEntity<>(certificateService.create(subjectDTO), HttpStatus.OK);
     }
+
+
+    @PostMapping(value = "/createCert/{certificateType}")
+    public ResponseEntity<String>createCert(@RequestBody SubjectDTO subjectDTO, @PathVariable String certificateType) throws CertificateException, ParseException, NoSuchAlgorithmException, KeyStoreException, NoSuchProviderException, IOException {
+        return new ResponseEntity<>(certificateService.creatCert(subjectDTO,certificateType),HttpStatus.OK);
+    }
+
 }

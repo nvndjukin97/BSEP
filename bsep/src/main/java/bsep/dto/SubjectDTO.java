@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 @Builder
 public class SubjectDTO {
-    private String cn;
+    //private String cn;
     private String surname;
     private String givenName;
     private String organization;

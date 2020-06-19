@@ -1,5 +1,7 @@
 package bsep.keyStore;
 
+import org.springframework.stereotype.Service;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -8,6 +10,7 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.Certificate;
 
+@Service
 public class KeyStoreWriter {
     //KeyStore je Java klasa za citanje specijalizovanih datoteka koje se koriste za cuvanje kljuceva
     //Tri tipa entiteta koji se obicno nalaze u ovakvim datotekama su:
@@ -45,6 +48,8 @@ public class KeyStoreWriter {
         }
     }
 
+    
+
     public void saveKeyStore(String fileName, char[] password) {
         try {
             keyStore.store(new FileOutputStream(fileName), password);
@@ -68,4 +73,17 @@ public class KeyStoreWriter {
             e.printStackTrace();
         }
     }
+
+    public void write(String alias, PrivateKey privateKey, char[] password, Certificate certificate, String fileName) {
+        try {
+            //this.loadKeyStore(fileName,password);
+            if(!keyStore.containsAlias(alias)) {
+                keyStore.setKeyEntry(alias, privateKey, password, new Certificate[] {certificate});
+                this.saveKeyStore(fileName,password);
+            }
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

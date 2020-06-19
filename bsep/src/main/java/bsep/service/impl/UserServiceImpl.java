@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -108,7 +109,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userInfo.getEmail());
         user.setCountry(userInfo.getCountry());
         user.setOrganization(userInfo.getOrganization());
-        user.setOrganizationUnity(userInfo.getOrganizationUnit());
+        user.setOrganizationUnit(userInfo.getOrganizationUnit());
 
 
         //aktivacija naloga
@@ -139,5 +140,7 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.save(user);
     }
+
+
 
 }

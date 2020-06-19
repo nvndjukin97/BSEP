@@ -21,4 +21,9 @@ public class Certificate {
 
     @Column
     private Boolean revoked;
+
+    public Certificate (String alias, Boolean revoked){
+        this.alias=alias;
+        this.revoked=revoked;
+    }
 }

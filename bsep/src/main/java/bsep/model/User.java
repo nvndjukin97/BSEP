@@ -40,8 +40,8 @@ public class User implements UserDetails {
     @Column(name = "organization")
     private String organization;
 
-    @Column(name = "organizationUnity")
-    private String organizationUnity;
+    @Column(name = "organizationUnit")
+    private String organizationUnit;
 
     @Column(name = "country")
     private String country;

@@ -2,6 +2,7 @@ package bsep.service.impl;
 
 import bsep.dto.SubjectDTO;
 import bsep.model.IssuerData;
+import bsep.model.User;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,11 @@ public class IssuerDataServiceImpl {
     @Autowired
     SubjectDataServiceImpl subjectDataService;
 
-    public IssuerData generateIssuerData(PrivateKey issuerKey, SubjectDTO subjectDTO) {
+    public IssuerData generateIssuerData(PrivateKey issuerKey, User subjectDTO) {
         X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-        builder.addRDN(BCStyle.CN, subjectDTO.getCn());
-        builder.addRDN(BCStyle.SURNAME, subjectDTO.getSurname());
-        builder.addRDN(BCStyle.GIVENNAME, subjectDTO.getGivenName());
+        builder.addRDN(BCStyle.CN, subjectDTO.getFirstName()+subjectDTO.getLastName());
+        builder.addRDN(BCStyle.SURNAME, subjectDTO.getLastName());
+        builder.addRDN(BCStyle.GIVENNAME, subjectDTO.getFirstName());
         builder.addRDN(BCStyle.O, subjectDTO.getOrganization());
         builder.addRDN(BCStyle.OU, subjectDTO.getOrganizationUnit());
         builder.addRDN(BCStyle.C, subjectDTO.getCountry());

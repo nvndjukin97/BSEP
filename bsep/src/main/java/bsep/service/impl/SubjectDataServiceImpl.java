@@ -55,7 +55,7 @@ public class SubjectDataServiceImpl {
             String sn="1";
             //klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
             X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-            builder.addRDN(BCStyle.CN, subjectDTO.getCn());
+            builder.addRDN(BCStyle.CN, subjectDTO.getSurname()+subjectDTO.getGivenName());
             builder.addRDN(BCStyle.SURNAME, subjectDTO.getSurname());
             builder.addRDN(BCStyle.GIVENNAME, subjectDTO.getGivenName());
             builder.addRDN(BCStyle.O, subjectDTO.getOrganization());
@@ -70,7 +70,7 @@ public class SubjectDataServiceImpl {
             // - podatke o vlasniku
             // - serijski broj sertifikata
             // - od kada do kada vazi sertifikat
-            return new SubjectData(keyPairSubject.getPublic(), builder.build(), sn, startDate, endDate);
+            return new SubjectData(keyPairSubject.getPrivate(), keyPairSubject.getPublic(), builder.build(), sn, startDate, endDate);
         //} catch (ParseException e) {
           //  e.printStackTrace();
         //}
