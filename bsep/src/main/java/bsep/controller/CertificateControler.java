@@ -28,15 +28,15 @@ public class CertificateControler {
         this.certificateService = certificateService;
     }
 
-    @PostMapping( value = "/create")
+    /*@PostMapping( value = "/create")
     public ResponseEntity<String>create(@RequestBody SubjectDTO subjectDTO) throws ParseException {
         return new ResponseEntity<>(certificateService.create(subjectDTO), HttpStatus.OK);
-    }
+    }*/
 
 
-    @PostMapping(value = "/createCert/{certificateType}")
-    public ResponseEntity<String>createCert(@RequestBody SubjectDTO subjectDTO, @PathVariable String certificateType) throws CertificateException, ParseException, NoSuchAlgorithmException, KeyStoreException, NoSuchProviderException, IOException {
-        return new ResponseEntity<>(certificateService.creatCert(subjectDTO,certificateType),HttpStatus.OK);
+    @PostMapping(value = "/createCert/{certificateType}/{id}")
+    public ResponseEntity<String>createCert(@RequestBody SubjectDTO subjectDTO, @PathVariable String certificateType, @PathVariable Long id) throws CertificateException, ParseException, NoSuchAlgorithmException, KeyStoreException, NoSuchProviderException, IOException {
+        return new ResponseEntity<>(certificateService.creatCert(subjectDTO,certificateType,id),HttpStatus.OK);
     }
 
 }

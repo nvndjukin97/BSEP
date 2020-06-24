@@ -76,7 +76,6 @@ public class KeyStoreWriter {
 
     public void write(String alias, PrivateKey privateKey, char[] password, Certificate certificate, String fileName) {
         try {
-            //this.loadKeyStore(fileName,password);
             if(!keyStore.containsAlias(alias)) {
                 keyStore.setKeyEntry(alias, privateKey, password, new Certificate[] {certificate});
                 this.saveKeyStore(fileName,password);

@@ -62,36 +62,18 @@ public class CertificateServiceImpl implements CertificateService {
         System.out.println("-------------------------------------------------------");
     }
 
-    public String create(SubjectDTO subjectDTO) throws ParseException {
-
+    public String creatCert(SubjectDTO subjectDTO, String certificateType, Long id) throws ParseException, NoSuchAlgorithmException, CertificateException, NoSuchProviderException, KeyStoreException, IOException {
         KeyPair keyPairIssuer = subjectDataService.generateKeyPair();
         //IssuerData issuerData = issuerDataService.generateIssuerData(keyPairIssuer.getPrivate(), subjectDTO);
         //Moracu menjati da ne bude hardkodovan subjectData!
         SubjectData subjectData = subjectDataService.generateSubjectData(subjectDTO);
-
-
-        //Generise se sertifikat za subjekta, potpisan od strane issuer-a
-        //CertificateGenerator cg = new CertificateGenerator();
-
-        //X509Certificate cert = certificateGenerator.generateCertificate(subjectData, issuerData);
-
-        //printCetr(cert);
-
-        return "Successfully created certificate";
-
-    }
-
-    public String creatCert(SubjectDTO subjectDTO, String certificateType) throws ParseException, NoSuchAlgorithmException, CertificateException, NoSuchProviderException, KeyStoreException, IOException {
-        KeyPair keyPairIssuer = subjectDataService.generateKeyPair();
-        //IssuerData issuerData = issuerDataService.generateIssuerData(keyPairIssuer.getPrivate(), subjectDTO);
-        //Moracu menjati da ne bude hardkodovan subjectData!
-        SubjectData subjectData = subjectDataService.generateSubjectData(subjectDTO);
-        if (certificateType.equals("self-signed")) {
+        User ulogovan = userRepository.findById(id).get();
+        if (certificateType.equals("self-signed") && ulogovan.getIsCa()) {
             String password = "self-signed";
 
 
             String alias = UUID.randomUUID().toString();
-            User issuer = userRepository.findById(Long.valueOf(1)).get();
+            User issuer = userRepository.findById(id).get();
             IssuerData issuerData = issuerDataService.generateIssuerData(keyPairIssuer.getPrivate(), issuer);
             X509Certificate cert = certificateGenerator.generateCertificate(subjectData, issuerData);
             System.out.println(issuer.getFirstName());
@@ -105,12 +87,12 @@ public class CertificateServiceImpl implements CertificateService {
             certificateRepository.save(certSelfSigned);
 
             return "Successfully created self-signed certificate";
-        } else if (certificateType.equals("intermediat")) {
+        } else if (certificateType.equals("intermediat") && !ulogovan.getIsCa()) {
 
             KeyStore keyStore = KeyStore.getInstance("JKS");
             String password = "intermediat";
             String alias = UUID.randomUUID().toString();
-            User issuer = userRepository.findById(Long.valueOf(1)).get();
+            User issuer = userRepository.findById(id).get();
             IssuerData issuerData = issuerDataService.generateIssuerData(keyPairIssuer.getPrivate(), issuer);
             X509Certificate cert = certificateGenerator.generateCertificate(subjectData, issuerData);
             System.out.println(issuer.getFirstName());
@@ -129,11 +111,11 @@ public class CertificateServiceImpl implements CertificateService {
             certificateRepository.save(certSelfSigned);
 
             return "Successfully created intermediat certificate";
-        } else if (certificateType.equals("end-entity")) {
+        } else if (certificateType.equals("end-entity") && !ulogovan.getIsCa()) {
             KeyStore keyStore = KeyStore.getInstance("JKS");
             String password = "end-entity";
             String alias = UUID.randomUUID().toString();
-            User issuer = userRepository.findById(Long.valueOf(2)).get();
+            User issuer = userRepository.findById(id).get();
             IssuerData issuerData = issuerDataService.generateIssuerData(keyPairIssuer.getPrivate(), issuer);
             X509Certificate cert = certificateGenerator.generateCertificate(subjectData, issuerData);
             System.out.println(issuer.getFirstName());
@@ -152,8 +134,9 @@ public class CertificateServiceImpl implements CertificateService {
 
             return "Successfully created end-entity certificate";
         }
-        return "Successfully created certificate";
+        return "Unsuccessfully created certificate";
     }
+
 
 
 }
