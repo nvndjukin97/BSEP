@@ -10,7 +10,7 @@ INSERT INTO `user` (user_type, id, username, first_name, last_name, organization
 
 INSERT INTO `user` (user_type, id, username, first_name, last_name, organization, organization_unit, country, email, password, enabled, last_password_reset_date, is_ca) VALUES (0, 3, 'admin3', 'Katarina', 'Prodanovic', 'FTN', 'Elektro', 'Mongolija', 'kac@gmail.com', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', true, '2017-10-01 21:58:58', false);
 
-INSERT INTO `user_authority` (user_id, authority_id) VALUES (1, 4);
-INSERT INTO `user_authority` (user_id, authority_id) VALUES (2, 5);
-INSERT INTO `user_authority` (user_id, authority_id) VALUES (3, 5);
+INSERT INTO `user_authority` (user_id, authority_id) VALUES (1, 1);
+INSERT INTO `user_authority` (user_id, authority_id) VALUES (2, 1);
+INSERT INTO `user_authority` (user_id, authority_id) VALUES (3, 1);
 

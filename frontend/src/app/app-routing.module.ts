@@ -6,6 +6,7 @@ import {CertFormComponent} from '../app/cert-form/cert-form.component'
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'login/certForm', component: CertFormComponent},
   { path: 'certForm', component: CertFormComponent }
 ];
 
