@@ -15,5 +15,8 @@ public interface UserService {
     User addUser(UserRegistrationDTO userInfo);
     void delete(Long id);
     void activateUser(Long id);
+    User findById(Long id);
+    User findByUsername(String username);
+    public User getLoogedIn();
 }
 

@@ -15,6 +15,10 @@ import bsep.repository.ConfirmationTokenRepository;
 import bsep.repository.UserRepository;
 import bsep.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,9 +53,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        return null;
+        List<User> result = userRepository.findAll();
+        return result;
     }
-
     @Override
     public User save(UserRequest userRequest) {
         User u = new User();
@@ -141,6 +145,34 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public User findById(Long id) throws AccessDeniedException {
+        User u = userRepository.findById(id).orElseGet(null);
+        return u;
+    }
+
+    @Override
+    public User findByUsername(String username) throws UsernameNotFoundException {
+        User u = userRepository.findByUsername(username);
+        return u;
+    }
+
+
+
+
+    @Override
+    public User getLoogedIn() throws AccessDeniedException {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        System.out.println(username+"userko");
+
+        return  findByUsername(username);
+    }
 
 
 }
