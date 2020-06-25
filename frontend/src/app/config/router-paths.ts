@@ -5,7 +5,7 @@ export const REGISTRATION_PATH = 'register';
 export const VERIFY_ACCOUNT = 'verify';
 
 // Admin paths
-export const ADMIN_HOME_PATH = 'login/certForm';
+export const ADMIN_HOME_PATH = 'login/cert';
 
 
 // Korisnik paths
