@@ -38,9 +38,14 @@ public class UserController {
 		return this.userService.findById(userId);
 	}
 
+//	@GetMapping("/getLoggedIn")
+//	public User getLoggedIn() {
+//		return this.userService.getLoogedIn();
+//	}
+
 	@GetMapping("/getLoggedIn")
-	public User getLoggedIn() {
-		return this.userService.getLoogedIn();
+	public User ulogovani() {
+		return this.userService.ulogovani();
 	}
 
 	@GetMapping("/user/all")

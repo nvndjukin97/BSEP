@@ -1,4 +1,4 @@
-import { VERIFY_ACC_URL, REGISTER_URL} from './../config/api-paths'; //ADMIN_ALL_USERS_URL, ADMIN_ALL_KORISNIKE_URL, ADMIN_DELETE_KORISNIKA_URL, ADMIN_ACTIVATE_KORISNIKA_URL, ADMIN_ALL_COMMENTS_URL, ADMIN_ACTIVATE_COMMENT_KORISNIKA_URL } from './../config/api-paths';
+import { VERIFY_ACC_URL, REGISTER_URL, LOGGED_USER} from './../config/api-paths'; //ADMIN_ALL_USERS_URL, ADMIN_ALL_KORISNIKE_URL, ADMIN_DELETE_KORISNIKA_URL, ADMIN_ACTIVATE_KORISNIKA_URL, ADMIN_ALL_COMMENTS_URL, ADMIN_ACTIVATE_COMMENT_KORISNIKA_URL } from './../config/api-paths';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -20,7 +20,11 @@ export class UserService {
   }
 
   getLoggedUser(): Observable<any> {
-    return this.http.get<User>(this._url);
+    //return this.http.get<User>(this._url);
+    return this.http.get(`${LOGGED_USER}`);
+  }
+  ulogovani(): Observable<any>{
+    return this.http.get(`${LOGGED_USER}`);
   }
 
   /*register(user: UserRegistrationDTO): Observable<any> {

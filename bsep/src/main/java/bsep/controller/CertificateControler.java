@@ -18,7 +18,7 @@ import java.text.ParseException;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping("/certificate")
+@RequestMapping("/api/certificate")
 public class CertificateControler {
 
     @Autowired

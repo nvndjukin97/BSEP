@@ -12,6 +12,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -21,6 +22,8 @@ import { LoginComponent } from './login/login.component';
 import { CertFormComponent } from './cert-form/cert-form.component';
 import { SignupComponent } from './signup/signup.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { CreatecertComponent } from './createcert/createcert.component';
+import { ShowcertComponent } from './showcert/showcert.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,9 @@ import { WelcomeComponent } from './welcome/welcome.component';
     LoginComponent,
     CertFormComponent,
     SignupComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    CreatecertComponent,
+    ShowcertComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
     MatInputModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

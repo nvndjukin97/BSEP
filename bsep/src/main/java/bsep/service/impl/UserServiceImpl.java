@@ -14,8 +14,10 @@ import bsep.repository.AuthorityRepository;
 import bsep.repository.ConfirmationTokenRepository;
 import bsep.repository.UserRepository;
 import bsep.service.UserService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,9 +26,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class UserServiceImpl implements UserService {
+
 
     @Autowired
     private UserRepository userRepository;
@@ -173,6 +177,30 @@ public class UserServiceImpl implements UserService {
 
         return  findByUsername(username);
     }
+
+    @Override
+    public User ulogovani() {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//       Object currentUser = auth.getPrincipal();
+//
+//       String username = "";
+//       if(currentUser instanceof UserDetails){
+//           username = ((UserDetails)currentUser).getUsername();
+//       }else{
+//           username = currentUser.toString();
+//       }
+//        System.out.println(username);
+//        User u = userRepository.findByUsername(username);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        System.out.println(username);
+        User u = userRepository.findByUsername(username);
+        //System.out.println(auth.getPrincipal());
+        //System.out.println(username+"TUUUUU TUUUU TUUUU");
+        return u;//userRepository.findByUsername(username);
+    }
+
 
 
 }

@@ -1,0 +1,52 @@
+<h1>Create certificate</h1>
+
+<form (ngSubmit)="onSubmit()">
+    <div style="text-align:center">
+        
+        <select class="form-control" id="certificateType">
+            <option value="selfsigned">Self Signed</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="endentity">End-entity</option>
+          </select>
+        
+        <p style="text-align:center">
+         <mat-form-field appearance="outline" >
+                <mat-label>Surname</mat-label>
+                <input matInput type="text" placeholder="Surname" name="surname" [(ngModel)]="subjectDTO.surname" >
+        </mat-form-field>
+        </p>
+        <p style="text-align:center">
+            <mat-form-field appearance="outline" >
+                <mat-label>Given Name</mat-label>
+                <input matInput type="text" placeholder="Given Name" name="givenname" [(ngModel)]="subjectDTO.givenname" >
+            </mat-form-field>
+        </p>
+        <p style="text-align:center">
+            <mat-form-field appearance="outline" >
+                <mat-label>Organization</mat-label>
+                <input matInput type="text" placeholder="Organization" name="organizationUnit" [(ngModel)]="subjectDTO.organization">
+            </mat-form-field>
+        </p>
+        <p style="text-align:center">
+            <mat-form-field appearance="outline" >
+                <mat-label>Organization Unit</mat-label>
+                <input matInput type="text" placeholder="Oganization Unit" name="organizationUnit" [(ngModel)]="subjectDTO.organizationUnit">
+           </mat-form-field>
+        </p>
+        <p style="text-align:center">
+            <mat-form-field appearance="outline" >
+                    <mat-label>Country</mat-label>
+                <input matInput type="text" placeholder="Country" name="country" [(ngModel)]="subjectDTO.country">
+            </mat-form-field>
+        </p>
+        <p style="text-align:center">
+            <mat-form-field appearance="outline" >
+                <mat-label>E-mail</mat-label>
+                <input matInput type="text" placeholder="E-mail" name="email" [(ngModel)]="subjectDTO.email">
+            </mat-form-field>
+        </p>
+    </div>
+    <div  style="text-align:center" >
+        <button  mat-raised-button color="primary" type="submit" >Create certificate</button>
+    </div>
+</form>
