@@ -42,7 +42,7 @@ public class CertificateControler {
     }
 
     @PostMapping(value = "/revokeCertificate/{alias}")
-    public ResponseEntity<String>revokeCertificate(@PathVariable String alias){
+    public ResponseEntity<String>revokeCertificate(@PathVariable String alias) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
         return new ResponseEntity<>(certificateService.revokeCertificate(alias),HttpStatus.OK);
     }
 

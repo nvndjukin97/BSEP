@@ -17,7 +17,6 @@ import bsep.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.jws.soap.SOAPBinding;
 import java.io.*;
 import java.security.*;
 import java.security.cert.CertificateException;
@@ -144,9 +143,39 @@ public class CertificateServiceImpl implements CertificateService {
         return "Unsuccessfully created certificate";
     }
 
-    public String revokeCertificate(String alias){
+    public String revokeCertificate(String alias) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
         Certificate cert  = certificateRepository.findByAlias(alias);
         cert.setRevoked(true);
+        certificateRepository.save(cert);
+        //TO-DO povlace se i svi sertifikati koje je potpisao povuceni
+        KeyStore ks = KeyStore.getInstance("JKS");
+        KeyStore ks1 = KeyStore.getInstance("JKS");
+        KeyStore ks2 = KeyStore.getInstance("JKS");
+
+        BufferedInputStream in = new BufferedInputStream(new FileInputStream("self-signedCertificate.jks"));
+        String password = "self-signed";
+        ks.load(in, password.toCharArray());
+
+        BufferedInputStream in1 = new BufferedInputStream(new FileInputStream("intemediatCertificate.jks"));
+        String password1 = "intermediat";
+        ks1.load(in1, password1.toCharArray());
+
+        BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("end-entityCertificate.jks"));
+        String password2 = "end-entity";
+        ks2.load(in2, password2.toCharArray());
+
+        if(ks.containsAlias(alias)){
+            X509Certificate cert1 = (X509Certificate) ks.getCertificate(alias);
+            povlaciDecu(alias, cert1);
+        }else if (ks1.containsAlias(alias)){
+            X509Certificate cert2 = (X509Certificate) ks1.getCertificate(alias);
+            povlaciDecu(alias, cert2);
+        }else if (ks2.containsAlias(alias)){
+            X509Certificate cert3 = (X509Certificate) ks2.getCertificate(alias);
+            povlaciDecu(alias, cert3);
+        }
+
+
         return "Certificate revoked";
     }
 
@@ -241,6 +270,61 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
 
+    public String povlaciDecu(String aliass,X509Certificate cert1) throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
 
+        KeyStore ks = KeyStore.getInstance("JKS");
+
+        String imePovucenog = (cert1.getIssuerDN().getName()).split(",")[7].split("=")[1];//ovo je cn, nije ime
+
+        BufferedInputStream in = new BufferedInputStream(new FileInputStream("self-signedCertificate.jks"));
+        String password = "self-signed";
+        ks.load(in, password.toCharArray());
+
+        //trazim iz ks sertifikate po aliasu
+        List<String> aliases = Collections.list(ks.aliases());
+
+        for (String alias : aliases){
+            X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
+            String issuedBy = (cert.getIssuerDN().getName()).split(",")[7].split("=")[1]; //Dobila sam cn
+            if(imePovucenog.equals(issuedBy)){
+                Certificate certificate = certificateRepository.findByAlias(alias);
+                certificate.setRevoked(true);
+                certificateRepository.save(certificate);
+            }
+
+
+
+        }
+
+        BufferedInputStream in1 = new BufferedInputStream(new FileInputStream("intemediatCertificate.jks"));
+        String password1 = "intermediat";
+        ks.load(in1, password1.toCharArray());
+        List<String> aliases1 = Collections.list(ks.aliases());
+
+        for (String alias : aliases1){
+            X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
+            String issuedBy = (cert.getIssuerDN().getName()).split(",")[7].split("=")[1]; //Dobila sam cn
+            if(imePovucenog.equals(issuedBy)){
+                Certificate certificate = certificateRepository.findByAlias(alias);
+                certificate.setRevoked(true);
+                certificateRepository.save(certificate);
+            }
+        }
+        BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("end-entityCertificate.jks"));
+        String password2 = "end-entity";
+        ks.load(in2, password2.toCharArray());
+        List<String> aliases2 = Collections.list(ks.aliases());
+
+        for (String alias : aliases2){
+            X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
+            String issuedBy = (cert.getIssuerDN().getName()).split(",")[7].split("=")[1]; //Dobila sam cn
+            if(imePovucenog.equals(issuedBy)){
+                Certificate certificate = certificateRepository.findByAlias(alias);
+                certificate.setRevoked(true);
+                certificateRepository.save(certificate);
+            }
+        }
+        return "Revoked children of revoked certificate";
+    }
 
 }
