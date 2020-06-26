@@ -1,5 +1,6 @@
 package bsep.controller;
 
+import bsep.dto.CertificateDTO;
 import bsep.dto.SubjectDTO;
 import bsep.service.impl.CertificateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.text.ParseException;
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -39,4 +41,15 @@ public class CertificateControler {
         return new ResponseEntity<>(certificateService.creatCert(subjectDTO,certificateType,id),HttpStatus.OK);
     }
 
+    @PostMapping(value = "/revokeCertificate/{alias}")
+    public ResponseEntity<String>revokeCertificate(@PathVariable String alias){
+        return new ResponseEntity<>(certificateService.revokeCertificate(alias),HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getAllCertificates")
+    public  ResponseEntity<List<CertificateDTO>> findAllCert() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, ParseException {
+        return new ResponseEntity<List<CertificateDTO>>(certificateService.findAllCert(),HttpStatus.OK);
+    }
+
+    
 }
