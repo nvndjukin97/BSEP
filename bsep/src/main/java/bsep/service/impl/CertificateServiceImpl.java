@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static java.time.LocalDate.now;
 import static org.aspectj.runtime.internal.Conversions.longValue;
 
 @Service
@@ -325,6 +326,53 @@ public class CertificateServiceImpl implements CertificateService {
             }
         }
         return "Revoked children of revoked certificate";
+    }
+
+    public String revokeExpiredCertificate() throws ParseException, KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
+        SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
+        Date sadasnjeVreme = iso8601Formater.parse(now().toString());
+
+        KeyStore ks = KeyStore.getInstance("JKS");
+        KeyStore ks1 = KeyStore.getInstance("JKS");
+        KeyStore ks2 = KeyStore.getInstance("JKS");
+
+        BufferedInputStream in = new BufferedInputStream(new FileInputStream("self-signedCertificate.jks"));
+        String password = "self-signed";
+        ks.load(in, password.toCharArray());
+        List<String> aliases = Collections.list(ks.aliases());
+
+        BufferedInputStream in1 = new BufferedInputStream(new FileInputStream("intemediatCertificate.jks"));
+        String password1 = "intermediat";
+        ks1.load(in1, password1.toCharArray());
+        List<String> aliases1 = Collections.list(ks1.aliases());
+
+        BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("end-entityCertificate.jks"));
+        String password2 = "end-entity";
+        ks2.load(in2, password2.toCharArray());
+        List<String> aliases2 = Collections.list(ks2.aliases());
+
+        for (String alias : aliases){
+            X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
+            if(sadasnjeVreme.after(cert.getNotAfter())){
+                Certificate certificate = certificateRepository.findByAlias(alias);
+                certificate.setRevoked(true);
+            }
+        }
+        for (String alias : aliases1){
+            X509Certificate cert = (X509Certificate) ks1.getCertificate(alias);
+            if(sadasnjeVreme.after(cert.getNotAfter())){
+                Certificate certificate = certificateRepository.findByAlias(alias);
+                certificate.setRevoked(true);
+            }
+        }
+        for (String alias : aliases2){
+            X509Certificate cert = (X509Certificate) ks2.getCertificate(alias);
+            if(sadasnjeVreme.after(cert.getNotAfter())){
+                Certificate certificate = certificateRepository.findByAlias(alias);
+                certificate.setRevoked(true);
+            }
+        }
+        return "Revoked expired certificates";
     }
 
 }

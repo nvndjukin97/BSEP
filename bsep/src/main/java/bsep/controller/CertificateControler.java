@@ -51,5 +51,10 @@ public class CertificateControler {
         return new ResponseEntity<List<CertificateDTO>>(certificateService.findAllCert(),HttpStatus.OK);
     }
 
+    @GetMapping(value = "/revokeExpiredCertificate")
+    public ResponseEntity<String>revokeExpiredCertificate() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, ParseException, IOException {
+        return new ResponseEntity<>(certificateService.revokeExpiredCertificate(),HttpStatus.OK);
+    }
+
 
 }
