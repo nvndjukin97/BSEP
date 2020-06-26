@@ -26,6 +26,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.aspectj.runtime.internal.Conversions.longValue;
+
 @Service
 public class CertificateServiceImpl implements CertificateService {
 
@@ -70,7 +72,9 @@ public class CertificateServiceImpl implements CertificateService {
         //Moracu menjati da ne bude hardkodovan subjectData!
         SubjectData subjectData = subjectDataService.generateSubjectData(subjectDTO);
         User ulogovan = userRepository.findById(id).get();
-        if (certificateType.equals("self-signed") && ulogovan.getIsCa()) {
+        Long ulogovanId = ulogovan.getId();
+        System.out.println(ulogovanId+"******ULOGOVANI ID");
+        if (certificateType.equals("self-signed") && ulogovan.getIsCa() ) {
             String password = "self-signed";
 
 
@@ -89,7 +93,8 @@ public class CertificateServiceImpl implements CertificateService {
             certificateRepository.save(certSelfSigned);
 
             return "Successfully created self-signed certificate";
-        } else if (certificateType.equals("intermediat") && !ulogovan.getIsCa()) {
+
+        } else if (certificateType.equals("intermediat") && !ulogovan.getIsCa() || ulogovanId.equals(longValue(1)) && certificateType.equals("intermediat")) {
 
             KeyStore keyStore = KeyStore.getInstance("JKS");
             String password = "intermediat";
@@ -113,7 +118,7 @@ public class CertificateServiceImpl implements CertificateService {
             certificateRepository.save(certSelfSigned);
 
             return "Successfully created intermediat certificate";
-        } else if (certificateType.equals("end-entity") && !ulogovan.getIsCa()) {
+        } else if (certificateType.equals("end-entity") && !ulogovan.getIsCa() || ulogovanId.equals(longValue(1)) && certificateType.equals("end-entity")) {
             KeyStore keyStore = KeyStore.getInstance("JKS");
             String password = "end-entity";
             String alias = UUID.randomUUID().toString();

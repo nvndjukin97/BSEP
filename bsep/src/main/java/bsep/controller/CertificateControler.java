@@ -51,5 +51,5 @@ public class CertificateControler {
         return new ResponseEntity<List<CertificateDTO>>(certificateService.findAllCert(),HttpStatus.OK);
     }
 
-    
+
 }
