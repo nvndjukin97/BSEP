@@ -16,7 +16,7 @@ export class CreateCertService{
     constructor(private _http: HttpClient) { }
 
     createCert(certificateType: string, id: number, subjectDTO: SubjectDTO):Observable<any>{
-        return this._http.post<String>(`${this._url}/${certificateType}/${id}`, subjectDTO);
+        return this._http.post<any>(`${this._url}/${certificateType}/${id}`, subjectDTO);
     }
     
 }
