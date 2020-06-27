@@ -20,12 +20,10 @@ export class UserService {
   }
 
   getLoggedUser(): Observable<any> {
-    //return this.http.get<User>(this._url);
-    return this.http.get(`${LOGGED_USER}`);
+    return this.http.get<User>(this._url);
+    //return this.http.get(`${LOGGED_USER}`);
   }
-  ulogovani(): Observable<any>{
-    return this.http.get(`${LOGGED_USER}`);
-  }
+
 
   /*register(user: UserRegistrationDTO): Observable<any> {
     console.log(user);

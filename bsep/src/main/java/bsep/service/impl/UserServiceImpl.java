@@ -14,21 +14,21 @@ import bsep.repository.AuthorityRepository;
 import bsep.repository.ConfirmationTokenRepository;
 import bsep.repository.UserRepository;
 import bsep.service.UserService;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
 
@@ -106,12 +106,9 @@ public class UserServiceImpl implements UserService {
         User user = UserMapper.toUserEntity(userInfo);
         user.setPassword(passwordEncoder.encode(userInfo.getPassword()));
         user.setLastPasswordResetDate(timeProvider.nowTimestamp());
-        if(userInfo.getRole().equals("ROLE_CA")){
-            user.getUserAuthorities().add(authorityRepository.findByName(UserRoles.ROLE_CA));
-        }else if(userInfo.getRole().equals("ROLE_NOT_CA")){
-            user.getUserAuthorities().add(authorityRepository.findByName(UserRoles.ROLE_NOT_CA));
+        if(userInfo.getRole().equals("ROLE_ADMIN")) {
+            user.getUserAuthorities().add(authorityRepository.findByName(UserRoles.ROLE_ADMIN));
         }
-        user.getUserAuthorities().add(authorityRepository.findByName(UserRoles.ROLE_KORISNIK));
         user.setFirstName(userInfo.getName());
         user.setLastName(userInfo.getSurname());
         user.setEmail(userInfo.getEmail());
@@ -165,41 +162,31 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User getLoogedIn() throws AccessDeniedException {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        System.out.println(username+"userko");
-
-        return  findByUsername(username);
-    }
-
-    @Override
-    public User ulogovani() {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//       Object currentUser = auth.getPrincipal();
-//
-//       String username = "";
-//       if(currentUser instanceof UserDetails){
-//           username = ((UserDetails)currentUser).getUsername();
-//       }else{
-//           username = currentUser.toString();
-//       }
-//        System.out.println(username);
-//        User u = userRepository.findByUsername(username);
-
+    public User getLoogedIn(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        System.out.println(username);
-        User u = userRepository.findByUsername(username);
-        //System.out.println(auth.getPrincipal());
-        //System.out.println(username+"TUUUUU TUUUU TUUUU");
-        return u;//userRepository.findByUsername(username);
-    }
+        String username = authentication.getName();
+        
+        log.info(String.valueOf(auth));
+
+
+
+
+        return null;
+
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String username;
+//        if (principal instanceof UserDetails) {
+//            username = ((UserDetails)principal).getUsername();
+//        } else {
+//            username = principal.toString();
+//        }
+//        System.out.println(username+"userko");
+//        User uu = userRepository.findByUsername(username);
+//        System.out.println(username+ uu.getFirstName());
+
+
+        }
 
 
 

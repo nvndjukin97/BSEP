@@ -18,6 +18,6 @@ public interface UserService {
     User findById(Long id);
     User findByUsername(String username);
     public User getLoogedIn();
-    User ulogovani();
+
 }
 

@@ -1,6 +1,7 @@
 package bsep.controller;
 
 
+import bsep.dto.UserDTO;
 import bsep.dto.UserRegistrationDTO;
 import bsep.model.User;
 import bsep.service.UserService;
@@ -38,15 +39,15 @@ public class UserController {
 		return this.userService.findById(userId);
 	}
 
-//	@GetMapping("/getLoggedIn")
-//	public User getLoggedIn() {
-//		return this.userService.getLoogedIn();
-//	}
-
 	@GetMapping("/getLoggedIn")
-	public User ulogovani() {
-		return this.userService.ulogovani();
+	public User getLoggedIn() {
+		return this.userService.getLoogedIn();
 	}
+
+//	@GetMapping("/getLoggedIn")
+//	public User ulogovani() {
+//		return this.userService.ulogovani();
+//	}
 
 	@GetMapping("/user/all")
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")

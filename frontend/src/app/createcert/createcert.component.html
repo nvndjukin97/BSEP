@@ -3,10 +3,10 @@
 <form (ngSubmit)="onSubmit()">
     <div style="text-align:center">
         
-        <select class="form-control" id="certificateType">
-            <option value="selfsigned">Self Signed</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="endentity">End-entity</option>
+        <select class="form-control" id="certificateType" name="certificateType" [(ngModel)]="certificateType">
+            <option value="self-signed">Self Signed</option>
+            <option value="intermediat">Intermediate</option>
+            <option value="end-entity">End-entity</option>
           </select>
         
         <p style="text-align:center">
@@ -18,7 +18,7 @@
         <p style="text-align:center">
             <mat-form-field appearance="outline" >
                 <mat-label>Given Name</mat-label>
-                <input matInput type="text" placeholder="Given Name" name="givenname" [(ngModel)]="subjectDTO.givenname" >
+                <input matInput type="text" placeholder="Given Name" name="givenName" [(ngModel)]="subjectDTO.givenName" >
             </mat-form-field>
         </p>
         <p style="text-align:center">

@@ -25,7 +25,7 @@ public class TokenUtils {
 	public String SECRET;
 
 	// Period vazenja
-	@Value("300000")
+	@Value("1800000")
 	private int EXPIRES_IN;
 
 	// Naziv headera kroz koji ce se prosledjivati JWT u komunikaciji server-klijent
@@ -55,7 +55,7 @@ public class TokenUtils {
 
 	private String generateAudience() {
 //		Moze se iskoristiti org.springframework.mobile.device.Device objekat za odredjivanje tipa uredjaja sa kojeg je zahtev stigao.
-		
+
 //		String audience = AUDIENCE_UNKNOWN;
 //		if (device.isNormal()) {
 //			audience = AUDIENCE_WEB;
@@ -102,7 +102,6 @@ public class TokenUtils {
 		return (username != null && username.equals(userDetails.getUsername())
 				&& !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate()));
 	}
-
 
 	public String getUsernameFromToken(String token) {
 		String username;
@@ -168,7 +167,7 @@ public class TokenUtils {
 	public String getAuthHeaderFromHeader(HttpServletRequest request) {
 		return request.getHeader(AUTH_HEADER);
 	}
-	
+
 	private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
 		return (lastPasswordReset != null && created.before(lastPasswordReset));
 	}

@@ -1,6 +1,6 @@
 export class SubjectDTO {
     surname: string;
-    givenname: string;
+    givenName: string;
     organization: string;
     organizationUnit: string;
     country: string;

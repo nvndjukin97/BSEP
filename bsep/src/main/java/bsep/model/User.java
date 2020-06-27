@@ -79,6 +79,10 @@ public class User implements UserDetails {
         return true;
     }
 
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
     public List<Authority> getUserAuthorities() {
         if (this.authorities == null) {
             this.authorities = new ArrayList<>();

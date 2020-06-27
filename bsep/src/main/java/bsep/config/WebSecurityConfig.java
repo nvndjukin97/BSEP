@@ -87,8 +87,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("**/public/**").permitAll()
 				.antMatchers("/auth/**").permitAll()
-				.antMatchers("/api/certificate/**").permitAll()
-				.antMatchers("/api/users/getLoggedIn").permitAll()
+				.antMatchers("/api/users/getLoggedIn/**").permitAll()
+				.antMatchers("/api/certificate/createCert/**").permitAll()
+
 				// All other requests must be authorized
 				.anyRequest().authenticated().and()
 
@@ -114,3 +115,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 }
+

@@ -8,6 +8,7 @@ import bsep.repository.UserRepository;
 import bsep.model.User;
 
 import bsep.security.TokenUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 // Ovaj servis je namerno izdvojen kao poseban u ovom primeru.
 // U opstem slucaju UserServiceImpl klasa bi mogla da implementira UserDetailService interfejs.
 @Service
+@Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
 
 	protected final Log LOGGER = LogFactory.getLog(getClass());
@@ -91,8 +93,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throw new ApiRequestException("Credentials are not valid!");
 		}
 
+		log.info("hajde proradi vise" + authentication.getName());
 		// Insert username and password into context
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+
 
 		// Create token
 		User user = (User) authentication.getPrincipal();
@@ -100,8 +104,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 		int expiresIn = tokenUtils.getExpiredIn();
 
 		UserDTO userDto = new UserDTO(user);
+		log.info(userDto.getName());
 		userDto.setToken(new UserTokenDTO(jwt, expiresIn));
 
+		log.info(user.getFirstName());
+		userRepository.save(user);
 		return userDto;
 	}
 }

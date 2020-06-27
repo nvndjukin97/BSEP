@@ -5,6 +5,7 @@ import {SubjectDTO} from '../model/subject-dto.model';
 import {CreateCertService} from '../createcert/createcert.service';
 import {UserService} from '../services/user.service';
 import { User } from '../services/user';
+import { USER_ID_KEY, USER_ROLE_KEY, USERNAME_KEY, USER_TOKEN_KEY } from './../config/local-storage-keys';
 
 @Component({
   selector: 'app-createcert',
@@ -21,24 +22,17 @@ export class CreatecertComponent implements OnInit {
   }
 
   onSubmit() {
+    var userId = parseInt(localStorage.getItem(USER_ID_KEY));
+    console.log(userId + "ULOGOVANI saaam *****");
     console.log(this.subjectDTO);
-    this._userService.ulogovani().subscribe(
-      data=>{ 
-       
-        console.log("ID moj" + data);
-        this.user = data;
-        console.log(this.user+"jajajjajajajjjaj")
+    this._createCertService.createCert(this.certificateType, userId, this.subjectDTO).subscribe(
+      result => {
+        alert("Can not create certificate");
       },
-      error=> console.error('Error!', error)
-  )
-  //   this._klasaServis.dodajKlasu(this.klasa)
-  //  .subscribe(
-  //      data=>{
-  //       console.log('Success!', JSON.stringify(data))
-  //       alert('Nova klasa automobila dodata!');
-  //       this.router.navigate(['admin']);
-  //      } ,
-  //       error=> console.error('Error!',error)
-  //   )
+      error =>{
+        alert("Created certificate");
+      }
+      
+    )
   }
 }

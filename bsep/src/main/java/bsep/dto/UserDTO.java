@@ -21,6 +21,8 @@ public class UserDTO {
     private String name;
     private String email;
     private String country;
+    private String oranization;
+    private String organizationUnit;
     private boolean enabled;
     private List<String> authorities;
     private UserTokenDTO token;
@@ -31,11 +33,14 @@ public class UserDTO {
         this.name = user.getFirstName();
         this.email = user.getEmail();
         this.country = user.getCountry();
+        this.oranization = user.getOrganization();
+        this.organizationUnit = user.getOrganizationUnit();
         this.enabled = user.isEnabled();
         this.token = null;
 
+
         this.authorities = user.getAuthorities().stream()
-                .map(authority -> ((Authority) authority).getName()).collect(Collectors.toList());
+                .map(authority ->  authority.getName()).collect(Collectors.toList());
     }
 
 }
