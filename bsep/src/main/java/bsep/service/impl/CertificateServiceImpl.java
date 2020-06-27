@@ -270,6 +270,8 @@ public class CertificateServiceImpl implements CertificateService {
             }
         } catch (KeyStoreException e) {
             e.printStackTrace();
+        } catch (EOFException exception) {
+            exception.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
@@ -277,6 +279,7 @@ public class CertificateServiceImpl implements CertificateService {
         } catch (CertificateException e) {
             e.printStackTrace();
         }
+
         return certificateDTOS;
     }
 

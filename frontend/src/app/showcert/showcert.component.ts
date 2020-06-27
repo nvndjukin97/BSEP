@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CertificateDTO} from '../model/certificate-dto.model';
 import {ShowCertificates} from '../showcert/showcert.service';
 
+
 @Component({
   selector: 'app-showcert',
   templateUrl: './showcert.component.html',
@@ -21,6 +22,10 @@ export class ShowcertComponent implements OnInit {
       },
       error=> console.error('Error!', error)
     )
+  }
+
+  onClickRevoke(alias): void{
+    this._showCertificateService.revokeCertificate(alias).subscribe();
   }
 
 }

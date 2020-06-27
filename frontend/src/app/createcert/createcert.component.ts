@@ -26,12 +26,12 @@ export class CreatecertComponent implements OnInit {
     console.log(userId + "ULOGOVANI saaam *****");
     console.log(this.subjectDTO);
     this._createCertService.createCert(this.certificateType, userId, this.subjectDTO).subscribe(
-      item => {
-        alert("Can not create certificate");
-      },
-      error =>{
-        alert("Created certificate");
-      }
+      (response) => {
+        //alert(response);
+    }, error => {
+      // alert("Greskaa");
+    }
+  
       
     )
   }

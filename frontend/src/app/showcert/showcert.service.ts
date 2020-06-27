@@ -11,6 +11,7 @@ import { CertificateDTO } from '../model/certificate-dto.model';
 })
 export class ShowCertificates{
     _url = 'http://localhost:8080/api/certificate/getAllCertificates';
+    _url2 = 'http://localhost:8080/api/certificate/revokeCertificate';
     
    
 
@@ -19,5 +20,10 @@ export class ShowCertificates{
     findAllCert():Observable<any>{
         return this._http.get<CertificateDTO[]>(`${this._url}`);
     }
+
+    revokeCertificate(alias: string): Observable<any>{
+        return this._http.post<string>(`${this._url2}/${alias}`,null);
+    }
+
     
 }

@@ -11,6 +11,7 @@
       <th>Valid to</th>
       <th>Certificate type</th>
       <th>Revoke</th>
+      <th>Download</th>
     </thead>
     <tbody>
         <tr *ngFor="let certificate of certificates">
@@ -33,7 +34,10 @@
                 {{certificate.certificateType}}
             </td>
             <td>
-                <button type="submit" mat-button color="accent" > Revoke </button>
+                <button type="button" mat-button color="warn" (click) = "onClickRevoke(certificate.alias)" > Revoke </button>
+            </td>
+            <td>
+                <button type="button" mat-button color="primary" (click) = "onClickDownload(certificate.alias)" > Download </button>
             </td>
         </tr>
     </tbody>
