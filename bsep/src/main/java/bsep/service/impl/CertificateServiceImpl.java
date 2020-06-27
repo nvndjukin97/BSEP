@@ -15,6 +15,7 @@ import bsep.repository.UserRepository;
 import bsep.service.CertificateService;
 import bsep.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -387,5 +388,6 @@ public class CertificateServiceImpl implements CertificateService {
         }
         return "Revoked expired certificates";
     }
+
 
 }

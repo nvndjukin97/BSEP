@@ -28,4 +28,8 @@ export class ShowcertComponent implements OnInit {
     this._showCertificateService.revokeCertificate(alias).subscribe();
   }
 
+  onClickDownload(certificate): void{
+    
+  }
+
 }

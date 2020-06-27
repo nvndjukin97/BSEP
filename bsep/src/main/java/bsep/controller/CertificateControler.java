@@ -3,13 +3,16 @@ package bsep.controller;
 import bsep.dto.CertificateDTO;
 import bsep.dto.SubjectDTO;
 import bsep.service.impl.CertificateServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sun.util.locale.LocaleMatcher;
 
-import java.io.IOException;
+import java.io.*;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -17,8 +20,7 @@ import java.security.cert.CertificateException;
 import java.text.ParseException;
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
+@Slf4j
 @RestController
 @RequestMapping("/api/certificate")
 public class CertificateControler {
@@ -54,6 +56,23 @@ public class CertificateControler {
     @GetMapping(value = "/revokeExpiredCertificate")
     public ResponseEntity<String>revokeExpiredCertificate() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, ParseException, IOException {
         return new ResponseEntity<>(certificateService.revokeExpiredCertificate(),HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/downloadCertificate")
+    public ResponseEntity downloadCertificate(CertificateDTO certificateDTO) throws FileNotFoundException {
+        //https://stackoverflow.com/questions/35680932/download-a-file-from-spring-boot-rest-service
+        String ime = certificateDTO.getAlias()+".CER";
+        File file = new File(ime);
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+
+        log.info("Radim download");
+        return ResponseEntity.ok().headers(headers).contentLength(file.length())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource);
     }
 
 
