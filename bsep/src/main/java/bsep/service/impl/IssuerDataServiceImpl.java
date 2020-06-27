@@ -3,6 +3,7 @@ package bsep.service.impl;
 import bsep.dto.SubjectDTO;
 import bsep.model.IssuerData;
 import bsep.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.springframework.beans.factory.annotation.Autowired;
