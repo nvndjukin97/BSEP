@@ -190,82 +190,92 @@ public class CertificateServiceImpl implements CertificateService {
         //trazim iz ks sertifikate po aliasu
         List<String> aliases = Collections.list(ks.aliases());
 
-        for (String alias : aliases){
-            X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
-            String issuedBy = (cert.getIssuerDN().getName()).split(",")[7].split("=")[1]; //Dobila sam cn
-            System.out.println(issuedBy);
-            //NevenaDjukin
-            //String issuedBy = cert.getIssuerDN().getName()
-            //UID=196c6cc8-cac9-469d-8d65-7d7275e8b5ae, EMAILADDRESS=nvn@gmail.com, C=Srbija, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=NevenaDjukin
-            String issuedTo = cert.getSubjectDN().getName().split(",")[7].split("=")[1];
-            System.out.println(issuedTo);
-            //String issuedTo = cert.getSubjectDN().getName();
-            //UID=9e62437b-bdc6-4d66-b7e6-953b2b73335d, EMAILADDRESS=nvn@gmail.com, C=RS, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=DjukinNevena
-            SimpleDateFormat sd =  new SimpleDateFormat("yyyy-MM-dd");
-            String pocetak = sd.format(cert.getNotBefore());
-            System.out.println(pocetak);
-            String kraj = sd.format(cert.getNotAfter());
-            System.out.println(kraj);
-            CertificateDTO certificateDTO = new CertificateDTO(alias, issuedBy,issuedTo,pocetak, kraj, "self-signed" );
-            System.out.println(certificateRepository.findByAlias(certificateDTO.getAlias()));
-            System.out.println(certificateDTO.getAlias());
+        try {
+            for (String alias : aliases) {
+                X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
+                String issuedBy = (cert.getIssuerDN().getName()).split(",")[7].split("=")[1]; //Dobila sam cn
+                System.out.println(issuedBy);
+                //NevenaDjukin
+                //String issuedBy = cert.getIssuerDN().getName()
+                //UID=196c6cc8-cac9-469d-8d65-7d7275e8b5ae, EMAILADDRESS=nvn@gmail.com, C=Srbija, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=NevenaDjukin
+                String issuedTo = cert.getSubjectDN().getName().split(",")[7].split("=")[1];
+                System.out.println(issuedTo);
+                //String issuedTo = cert.getSubjectDN().getName();
+                //UID=9e62437b-bdc6-4d66-b7e6-953b2b73335d, EMAILADDRESS=nvn@gmail.com, C=RS, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=DjukinNevena
+                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+                String pocetak = sd.format(cert.getNotBefore());
+                System.out.println(pocetak);
+                String kraj = sd.format(cert.getNotAfter());
+                System.out.println(kraj);
+                CertificateDTO certificateDTO = new CertificateDTO(alias, issuedBy, issuedTo, pocetak, kraj, "self-signed");
+                System.out.println(certificateRepository.findByAlias(certificateDTO.getAlias()));
+                System.out.println(certificateDTO.getAlias());
 
-            if(!certificateRepository.findByAlias(certificateDTO.getAlias()).getRevoked()){
-                certificateDTOS.add(certificateDTO);
+                if (!certificateRepository.findByAlias(certificateDTO.getAlias()).getRevoked()) {
+                    certificateDTOS.add(certificateDTO);
+                }
             }
-        }
 
-        BufferedInputStream in1 = new BufferedInputStream(new FileInputStream("intemediatCertificate.jks"));
-        String password1 = "intermediat";
-        ks.load(in1, password1.toCharArray());
-        List<String> aliases1 = Collections.list(ks.aliases());
+            BufferedInputStream in1 = new BufferedInputStream(new FileInputStream("intemediatCertificate.jks"));
+            String password1 = "intermediat";
+            ks.load(in1, password1.toCharArray());
+            List<String> aliases1 = Collections.list(ks.aliases());
 
-        for (String alias : aliases1){
-            X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
-            String issuedBy = (cert.getIssuerDN().getName()).split(",")[7].split("=")[1]; //Dobila sam cn
-            System.out.println(issuedBy);
-            //NevenaDjukin
-            //String issuedBy = cert.getIssuerDN().getName()
-            //UID=196c6cc8-cac9-469d-8d65-7d7275e8b5ae, EMAILADDRESS=nvn@gmail.com, C=Srbija, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=NevenaDjukin
-            String issuedTo = cert.getSubjectDN().getName().split(",")[7].split("=")[1];
-            System.out.println(issuedTo);
-            //String issuedTo = cert.getSubjectDN().getName();
-            //UID=9e62437b-bdc6-4d66-b7e6-953b2b73335d, EMAILADDRESS=nvn@gmail.com, C=RS, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=DjukinNevena
-            SimpleDateFormat sd =  new SimpleDateFormat("yyyy-MM-dd");
-            String pocetak = sd.format(cert.getNotBefore());
-            System.out.println(pocetak);
-            String kraj = sd.format(cert.getNotAfter());
-            System.out.println(kraj);
-            CertificateDTO certificateDTO = new CertificateDTO(alias, issuedBy,issuedTo,pocetak, kraj, "intermediat" );
-            if(!certificateRepository.findByAlias(certificateDTO.getAlias()).getRevoked()){
-                certificateDTOS.add(certificateDTO);
+            for (String alias : aliases1) {
+                X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
+                String issuedBy = (cert.getIssuerDN().getName()).split(",")[7].split("=")[1]; //Dobila sam cn
+                System.out.println(issuedBy);
+                //NevenaDjukin
+                //String issuedBy = cert.getIssuerDN().getName()
+                //UID=196c6cc8-cac9-469d-8d65-7d7275e8b5ae, EMAILADDRESS=nvn@gmail.com, C=Srbija, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=NevenaDjukin
+                String issuedTo = cert.getSubjectDN().getName().split(",")[7].split("=")[1];
+                System.out.println(issuedTo);
+                //String issuedTo = cert.getSubjectDN().getName();
+                //UID=9e62437b-bdc6-4d66-b7e6-953b2b73335d, EMAILADDRESS=nvn@gmail.com, C=RS, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=DjukinNevena
+                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+                String pocetak = sd.format(cert.getNotBefore());
+                System.out.println(pocetak);
+                String kraj = sd.format(cert.getNotAfter());
+                System.out.println(kraj);
+                CertificateDTO certificateDTO = new CertificateDTO(alias, issuedBy, issuedTo, pocetak, kraj, "intermediat");
+                if (!certificateRepository.findByAlias(certificateDTO.getAlias()).getRevoked()) {
+                    certificateDTOS.add(certificateDTO);
+                }
             }
-        }
-        BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("end-entityCertificate.jks"));
-        String password2 = "end-entity";
-        ks.load(in2, password2.toCharArray());
-        List<String> aliases2 = Collections.list(ks.aliases());
+            BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("end-entityCertificate.jks"));
+            String password2 = "end-entity";
+            ks.load(in2, password2.toCharArray());
+            List<String> aliases2 = Collections.list(ks.aliases());
 
-        for (String alias : aliases2){
-            X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
-            String issuedBy = (cert.getIssuerDN().getName()).split(",")[7].split("=")[1]; //Dobila sam cn
-            System.out.println(issuedBy);
-            //NevenaDjukin
-            //String issuedBy = cert.getIssuerDN().getName()
-            //UID=196c6cc8-cac9-469d-8d65-7d7275e8b5ae, EMAILADDRESS=nvn@gmail.com, C=Srbija, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=NevenaDjukin
-            String issuedTo = cert.getSubjectDN().getName().split(",")[7].split("=")[1];
-            System.out.println(issuedTo);
-            //String issuedTo = cert.getSubjectDN().getName();
-            //UID=9e62437b-bdc6-4d66-b7e6-953b2b73335d, EMAILADDRESS=nvn@gmail.com, C=RS, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=DjukinNevena
-            SimpleDateFormat sd =  new SimpleDateFormat("yyyy-MM-dd");
-            String pocetak = sd.format(cert.getNotBefore());
-            System.out.println(pocetak);
-            String kraj = sd.format(cert.getNotAfter());
-            System.out.println(kraj);
-            CertificateDTO certificateDTO = new CertificateDTO(alias, issuedBy,issuedTo,pocetak, kraj, "end-entity" );
-            if(!certificateRepository.findByAlias(certificateDTO.getAlias()).getRevoked()){
-                certificateDTOS.add(certificateDTO);
+            for (String alias : aliases2) {
+                X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
+                String issuedBy = (cert.getIssuerDN().getName()).split(",")[7].split("=")[1]; //Dobila sam cn
+                System.out.println(issuedBy);
+                //NevenaDjukin
+                //String issuedBy = cert.getIssuerDN().getName()
+                //UID=196c6cc8-cac9-469d-8d65-7d7275e8b5ae, EMAILADDRESS=nvn@gmail.com, C=Srbija, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=NevenaDjukin
+                String issuedTo = cert.getSubjectDN().getName().split(",")[7].split("=")[1];
+                System.out.println(issuedTo);
+                //String issuedTo = cert.getSubjectDN().getName();
+                //UID=9e62437b-bdc6-4d66-b7e6-953b2b73335d, EMAILADDRESS=nvn@gmail.com, C=RS, OU=Elektro, O=FTN, GIVENNAME=Nevena, SURNAME=Djukin, CN=DjukinNevena
+                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+                String pocetak = sd.format(cert.getNotBefore());
+                System.out.println(pocetak);
+                String kraj = sd.format(cert.getNotAfter());
+                System.out.println(kraj);
+                CertificateDTO certificateDTO = new CertificateDTO(alias, issuedBy, issuedTo, pocetak, kraj, "end-entity");
+                if (!certificateRepository.findByAlias(certificateDTO.getAlias()).getRevoked()) {
+                    certificateDTOS.add(certificateDTO);
+                }
             }
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
         }
         return certificateDTOS;
     }

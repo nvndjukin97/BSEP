@@ -1,1 +1,40 @@
-<p>showcert works!</p>
+<div class="container">
+    <h2>Certificate list</h2>
+    <br>
+
+<table class="ui celled striped table">
+    <thead>
+      <th>Alias</th>
+      <th>Issued by</th>
+      <th>Issued to</th>
+      <th>Valid from</th>
+      <th>Valid to</th>
+      <th>Certificate type</th>
+      <th>Revoke</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let certificate of certificates">
+            <td>
+                {{certificate.alias}}
+            </td>
+            <td>
+                {{certificate.issuedBy}}
+            </td>
+            <td>
+                {{certificate.issuedTo}}
+            </td>
+            <td>
+                {{certificate.startDate}}
+            </td>
+            <td>
+                {{certificate.endDate}}
+            </td>
+            <td>
+                {{certificate.certificateType}}
+            </td>
+            <td>
+                <button type="submit" mat-button color="accent" > Revoke </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
