@@ -109,6 +109,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+
+		<!--Dodat OWASP dependency -->
+		<dependency>
+			<groupId>org.owasp</groupId>
+			<artifactId>dependency-check-maven</artifactId>
+			<version>5.2.2</version>
+		</dependency>
+
+		<!-- SQL safe -->
+		<dependency>
+			<groupId>com.github.rkpunjal.sqlsafe</groupId>
+			<artifactId>sql-injection-safe</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -1,5 +1,6 @@
 package bsep.dto;
 
+import com.github.rkpunjal.sqlsafe.SQLInjectionSafe;
 import lombok.*;
 
 @Setter
@@ -10,12 +11,13 @@ import lombok.*;
 @Builder
 public class SubjectDTO {
     //private String cn;
-    private String surname;
-    private String givenName;
-    private String organization;
-    private String organizationUnit;
-    private String country;
-    private String email;
+
+    private @SQLInjectionSafe String surname;
+    private @SQLInjectionSafe String givenName;
+    private @SQLInjectionSafe String organization;
+    private @SQLInjectionSafe String organizationUnit;
+    private @SQLInjectionSafe String country;
+    private @SQLInjectionSafe String email;
 
 //     builder.addRDN(BCStyle.CN, "Nikola Luburic");
 //	    builder.addRDN(BCStyle.SURNAME, "Luburic");

@@ -1,5 +1,6 @@
 package bsep.model;
 
+import com.github.rkpunjal.sqlsafe.SQLInjectionSafe;
 import com.mysql.cj.conf.PropertyDefinitions;
 import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +27,7 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "username")
-    private String username;
+    private @SQLInjectionSafe String username;
 
     @Column(name = "password")
     private String password;
