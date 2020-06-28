@@ -61,9 +61,16 @@ public class CertificateControler {
     @PostMapping(value = "/downloadCertificate")
     public ResponseEntity downloadCertificate(CertificateDTO certificateDTO) throws FileNotFoundException {
         //https://stackoverflow.com/questions/35680932/download-a-file-from-spring-boot-rest-service
-        String ime = certificateDTO.getAlias()+".CER";
+        log.info(certificateDTO.getAlias());
+        String ime = "fajlicMojSaSertifikatom.crt";
         File file = new File(ime);
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        InputStreamResource resource = null;
+
+        try {
+            resource = new InputStreamResource(new FileInputStream(ime));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Pragma", "no-cache");

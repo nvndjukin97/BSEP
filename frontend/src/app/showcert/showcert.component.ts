@@ -11,6 +11,7 @@ import {ShowCertificates} from '../showcert/showcert.service';
 export class ShowcertComponent implements OnInit {
 
   public certificates : CertificateDTO[];
+ 
   constructor(private _showCertificateService: ShowCertificates) { }
 
   ngOnInit(): void {
@@ -28,8 +29,6 @@ export class ShowcertComponent implements OnInit {
     this._showCertificateService.revokeCertificate(alias).subscribe();
   }
 
-  onClickDownload(certificate): void{
-    
-  }
+  
 
 }

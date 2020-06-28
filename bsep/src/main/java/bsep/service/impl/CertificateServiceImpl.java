@@ -16,6 +16,7 @@ import bsep.service.CertificateService;
 import bsep.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -342,6 +343,7 @@ public class CertificateServiceImpl implements CertificateService {
         return "Revoked children of revoked certificate";
     }
 
+    @Scheduled(cron = "0 0 6 * *")
     public String revokeExpiredCertificate() throws ParseException, KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
         Date sadasnjeVreme = iso8601Formater.parse(now().toString());
